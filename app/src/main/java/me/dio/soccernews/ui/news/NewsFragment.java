@@ -10,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import com.google.android.material.snackbar.Snackbar;
+
 import me.dio.soccernews.MainActivity;
+import me.dio.soccernews.R;
 import me.dio.soccernews.databinding.FragmentNewsBinding;
 import me.dio.soccernews.ui.adapter.NewsAdapter;
 
@@ -24,8 +27,6 @@ public class NewsFragment extends Fragment {
         binding = FragmentNewsBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-
-
         binding.rvNews.setLayoutManager(new LinearLayoutManager(getContext()));
         newsViewModel.getNews().observe(getViewLifecycleOwner(), news -> {
             binding.rvNews.setAdapter(new NewsAdapter(news, updatedNews -> {
@@ -38,15 +39,15 @@ public class NewsFragment extends Fragment {
 
         newsViewModel.getState().observe(getViewLifecycleOwner(), state -> {
             switch (state) {
-                case DONE:
-                    //TODO: Incluir SwipeRefresh Layout (loading)
+                case DOING:
+                    binding.srlNews.setEnabled(true);
                     break;
-                case DOINS:
-                    //TODO: Finalizar SwipeRefresh Layout (loading)
+                case DONE:
+                    binding.srlNews.setEnabled(false);
                     break;
                 case ERROR:
-                    //TODO: Finalizar SwipeRefresh Layout (loading)
-                    //TODO: Mostrar um erro genérico
+                    binding.srlNews.setEnabled(false);
+                    Snackbar.make(binding.srlNews, "Network error", Snackbar.LENGTH_SHORT).show();
             }
         });
 

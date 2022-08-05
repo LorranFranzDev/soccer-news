@@ -17,7 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class NewsViewModel extends ViewModel {
 
     public enum State {
-        DOINS, DONE, ERROR;
+        DOING, DONE, ERROR
     }
 
     private final MutableLiveData<List<News>> news = new MutableLiveData<>();
@@ -36,7 +36,7 @@ public class NewsViewModel extends ViewModel {
     }
 
     private void findNews() {
-        state.setValue(State.DOINS);
+        state.setValue(State.DOING);
         api.getNews().enqueue(new Callback<List<News>>() {
             @Override
             public void onResponse(Call<List<News>> call, Response<List<News>> response) {
